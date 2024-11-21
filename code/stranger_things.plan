@@ -1,0 +1,47 @@
+fluents: 
+	monster_at_hawkings.
+	elevensquad_at_hawkings.
+	elevensquad_at_upside_down.
+	elevensquad_relaxed.
+	elevensquad_takedown_monster.
+
+actions:
+	go_to_hawkings.
+	hunt_monster.
+	go_to_upside_down.
+	unleash_monster.
+
+always:	
+	executable go_to_hawkings if elevensquad_relaxed.
+	caused elevensquad_at_hawkings after go_to_hawkings.
+	caused -elevensquad_at_upside_down after go_to_upside_down.
+	
+	executable hunt_monster if elevensquad_at_hawkings.
+	executable hunt_monster if elevensquad_relaxed.
+	executable hunt_monster if monster_at_hawkings.
+	caused elevensquad_takedown_monster after hunt_monster.
+
+	executable go_to_upside_down if elevensquad_relaxed.
+	executable go_to_upside_down if monster_at_hawkings.
+	executable go_to_upside_down if elevensquad_takedown_monster.
+	caused monster_at_hawkings after go_to_upside_down.
+	caused elevensquad_at_upside_down after go_to_upside_down.
+	caused elevensquad_at_hawkings after go_to_hawkings.
+
+	executable unleash_monster if -monster_at_hawkings.
+	executable unleash_monster if -elevensquad_at_hawkings.
+	executable unleash_monster if elevensquad_at_upside_down.
+	executable unleash_monster if elevensquad_relaxed.
+	executable unleash_monster if elevensquad_takedown_monster .
+	caused -elevensquad_takedown_monster after unleash_monster.
+	caused -elevensquad_relaxed after unleash_monster.	
+
+initially: 
+	total monster_at_hawkings.
+	elevensquad_at_hawkings.
+	-elevensquad_at_upside_down.
+	total elevensquad_relaxed.
+	total elevensquad_takedown_monster.
+
+
+goal: -elevensquad_takedown_monster? (4)
